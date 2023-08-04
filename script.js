@@ -8,15 +8,17 @@ function calcular(event) {
     // Passo 1
     let usuario = pegarValores()
 
-    // Passo2
-    // let segundos = calcularSegundos(usuario.nascimento)
+    usuario = atualizarDados(usuario)
 
-    usuario = dadosAtualizado(usuario)
+    let classificacaoFaixaEtaria = faixaEtaria(usuario.idade)
+    console.log(classificacaoFaixaEtaria)
 
+    usuario = atualizarDadosFinal(usuario, classificacaoFaixaEtaria)
+    
     cadastrarIdade(usuario)
     
+    // Esse
     carregarUsuarios()
-
 
     
 }
@@ -43,7 +45,7 @@ function pegarValores() {
     return dadosUsuario
 }
 
-function dadosAtualizado(dadosUsuario) {
+function atualizarDados(dadosUsuario) {
     
     let dataHoraAtual = new Intl.DateTimeFormat('pt-BR', { timeStyle: 'long', dateStyle: 'short' }).format(Date.now())
 
@@ -59,6 +61,29 @@ function dadosAtualizado(dadosUsuario) {
     return dadosUsuarioAtualizado;
 }
 
+function faixaEtaria(idade) {
+
+    if (idade >= 0 && idade <13 ) {
+        return "Criança"
+    } else if (idade > 12 && idade < 18) {
+        return "Adolescente"
+    } else if (idade > 17 && idade < 66 ) {
+        return "Adulto"
+    } else {
+        return "Idoso"
+    }
+  
+}
+
+function atualizarDadosFinal(dadosUsuarioAtualizado, classificacaoFaixaEtaria) {
+    
+    let dadosUsuarioAtualizadoFinal = {
+        ...dadosUsuarioAtualizado,
+        faixaEtaria: classificacaoFaixaEtaria
+    }
+    return dadosUsuarioAtualizadoFinal
+
+}
 
 function cadastrarIdade(dadosUsuario) {
     let listaUsuarios = []
@@ -109,6 +134,7 @@ function montarTabela(listaUsuarios) {
         template += `<tr>
             <td data-cell="idade">${usuario.nome}</td>
             <td data-cell="data de cadastro">${usuario.idade}</td>
+            <td data-cell="data de cadastro">${usuario.faixaEtaria}</td>
             <td data-cell="data de cadastro">${usuario.dataCadastro}</td>
         </tr>`
     })
